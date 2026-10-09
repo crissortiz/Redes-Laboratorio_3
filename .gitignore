@@ -1,0 +1,14 @@
+# Ejecutables de TCP
+    broker_tcp
+    publisher_tcp
+    subscriber_tcp
+  
+    # Ejecutables de UDP
+    broker_udp
+    publisher_udp
+    subscriber_udp
+  
+    # Archivos objeto y temporales
+    *.o
+    *.log
+    *.pcap

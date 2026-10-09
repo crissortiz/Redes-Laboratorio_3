@@ -9,6 +9,7 @@
  * ./subscriber_udp 127.0.0.1 9090 PartidoA PartidoB
  */
 
+#define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

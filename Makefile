@@ -1,28 +1,28 @@
 CC = gcc
 CFLAGS = -std=c11 -Wall -Wextra -Wpedantic
 
+.PHONY: all tcp udp quic clean help
+
 all: tcp udp
 
-tcp: broker_tcp publisher_tcp subscriber_tcp
-udp: broker_udp publisher_udp subscriber_udp
+tcp:
+	$(MAKE) -C tcp
 
-broker_tcp: broker_tcp.c
-	$(CC) $(CFLAGS) -o broker_tcp broker_tcp.c
+udp:
+	$(MAKE) -C udp
 
-publisher_tcp: publisher_tcp.c
-	$(CC) $(CFLAGS) -o publisher_tcp publisher_tcp.c
-
-subscriber_tcp: subscriber_tcp.c
-	$(CC) $(CFLAGS) -o subscriber_tcp subscriber_tcp.c
-
-broker_udp: broker_udp.c
-	$(CC) $(CFLAGS) -o broker_udp broker_udp.c
-
-publisher_udp: publisher_udp.c
-	$(CC) $(CFLAGS) -o publisher_udp publisher_udp.c
-
-subscriber_udp: subscriber_udp.c
-	$(CC) $(CFLAGS) -o subscriber_udp subscriber_udp.c
+quic:
+	$(MAKE) -C quic
 
 clean:
-	rm -f broker_tcp publisher_tcp subscriber_tcp broker_udp publisher_udp subscriber_udp *.o *.log
+	$(MAKE) -C tcp clean
+	$(MAKE) -C udp clean
+	rm -f logs/*.log
+
+help:
+	@echo "Comandos disponibles:"
+	@echo "  make        - Compila modulos TCP y UDP"
+	@echo "  make tcp    - Compila solo el modulo TCP"
+	@echo "  make udp    - Compila solo el modulo UDP"
+	@echo "  make quic   - Compila el modulo bono QUIC"
+	@echo "  make clean  - Limpia binarios y logs"

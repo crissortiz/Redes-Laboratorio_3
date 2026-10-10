@@ -2,13 +2,24 @@
 broker_tcp
 publisher_tcp
 subscriber_tcp
+tcp/broker_tcp
+tcp/publisher_tcp
+tcp/subscriber_tcp
 
 # Ejecutables de UDP
 broker_udp
 publisher_udp
 subscriber_udp
+udp/broker_udp
+udp/publisher_udp
+udp/subscriber_udp
 
-# Archivos objeto, logs y capturas
+# Ejecutables de QUIC
+quic/broker_quic
+quic/publisher_quic
+quic/subscriber_quic
+
+# Archivos objeto, temporales y logs
 *.o
 *.log
-*.pcap
+logs/*.log

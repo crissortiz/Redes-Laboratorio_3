@@ -6,19 +6,20 @@
 
 set -e
 PUERTO=9090
-DIR_ACTUAL="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$DIR_ACTUAL"
+DIR_SCRIPT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DIR_RAIZ="$(cd "$DIR_SCRIPT/.." && pwd)"
+cd "$DIR_RAIZ"
+
+mkdir -p logs
 
 echo "=================================================="
 echo "    INICIANDO PRUEBA DE AUTOMATIZACIÓN (UDP)      "
 echo "=================================================="
 
 # 1. Asegurar que los binarios estén compilados
-if [ ! -f ./broker_udp ] || [ ! -f ./subscriber_udp ] || [ ! -f ./publisher_udp ]; then
+if [ ! -f ./udp/broker_udp ] || [ ! -f ./udp/subscriber_udp ] || [ ! -f ./udp/publisher_udp ]; then
     echo "[!] Compilando programas UDP..."
-    gcc -std=c11 -Wall -Wextra broker_udp.c -o broker_udp
-    gcc -std=c11 -Wall -Wextra publisher_udp.c -o publisher_udp
-    gcc -std=c11 -Wall -Wextra subscriber_udp.c -o subscriber_udp
+    make -C udp
 fi
 
 # Limpiar procesos previos en el puerto si existieran
@@ -27,27 +28,27 @@ sleep 0.5
 
 # 2. Iniciar Broker UDP
 echo "[1/4] Iniciando Broker UDP en puerto $PUERTO..."
-./broker_udp $PUERTO > broker_udp.log 2>&1 &
+./udp/broker_udp $PUERTO > logs/broker_udp.log 2>&1 &
 PID_BROKER=$!
 sleep 1
 
 # 3. Iniciar Suscriptores
 echo "[2/4] Iniciando Suscriptor 1 (Tema: PartidoA)..."
-./subscriber_udp 127.0.0.1 $PUERTO PartidoA > sub1_udp.log 2>&1 &
+./udp/subscriber_udp 127.0.0.1 $PUERTO PartidoA > logs/sub1_udp.log 2>&1 &
 PID_SUB1=$!
 
 echo "[2/4] Iniciando Suscriptor 2 (Temas: PartidoA y PartidoB)..."
-./subscriber_udp 127.0.0.1 $PUERTO PartidoA PartidoB > sub2_udp.log 2>&1 &
+./udp/subscriber_udp 127.0.0.1 $PUERTO PartidoA PartidoB > logs/sub2_udp.log 2>&1 &
 PID_SUB2=$!
 sleep 1.5
 
 # 4. Iniciar Publicadores (10 mensajes cada uno, intervalo de 300ms)
 echo "[3/4] Enviando 10 eventos desde Publicador 1 (PartidoA / P1)..."
-./publisher_udp 127.0.0.1 $PUERTO PartidoA P1 10 300 > pub1_udp.log 2>&1 &
+./udp/publisher_udp 127.0.0.1 $PUERTO PartidoA P1 10 300 > logs/pub1_udp.log 2>&1 &
 PID_PUB1=$!
 
 echo "[3/4] Enviando 10 eventos desde Publicador 2 (PartidoB / P2)..."
-./publisher_udp 127.0.0.1 $PUERTO PartidoB P2 10 300 > pub2_udp.log 2>&1 &
+./udp/publisher_udp 127.0.0.1 $PUERTO PartidoB P2 10 300 > logs/pub2_udp.log 2>&1 &
 PID_PUB2=$!
 
 # Esperar a que terminen los publicadores
@@ -71,9 +72,9 @@ echo "=================================================="
 echo "           RESUMEN ESTADÍSTICO UDP               "
 echo "=================================================="
 echo "--- Resumen Suscriptor 1 (Esperados: 10 de PartidoA) ---"
-cat sub1_udp.log | grep -A 5 "RESUMEN DEL SUSCRIPTOR" || cat sub1_udp.log
+cat logs/sub1_udp.log | grep -A 5 "RESUMEN DEL SUSCRIPTOR" || cat logs/sub1_udp.log
 echo ""
 echo "--- Resumen Suscriptor 2 (Esperados: 20 -> 10 PartidoA y 10 PartidoB) ---"
-cat sub2_udp.log | grep -A 5 "RESUMEN DEL SUSCRIPTOR" || cat sub2_udp.log
+cat logs/sub2_udp.log | grep -A 5 "RESUMEN DEL SUSCRIPTOR" || cat logs/sub2_udp.log
 echo "=================================================="
-echo "¡Prueba UDP completada con éxito!"
+echo "¡Prueba UDP completada con éxito! (Logs guardados en logs/)"

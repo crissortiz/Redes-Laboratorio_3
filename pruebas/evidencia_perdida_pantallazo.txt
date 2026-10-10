@@ -1,0 +1,25 @@
+========================================================================
+    PRUEBA DE ESTRÉS: PÉRDIDA DE PAQUETES EN UDP (RÁFAGA DE 1000 MSGS)   
+========================================================================
+[1/3] Iniciando Broker UDP en puerto 9090...
+[2/3] Iniciando Suscriptor para el tema 'PartidoA'...
+[3/3] Enviando ráfaga masiva de 1000 mensajes sin pausa (intervalo = 0 ms)...
+      -> Ráfaga de 1000 mensajes completada.
+[!] Finalizando procesos y calculando balance...
+
+========================================================================
+           EVIDENCIA EXPERIMENTAL DE PÉRDIDA DE DATAGRAMAS             
+========================================================================
+Muestra de saltos en secuencia detectados por el suscriptor [HUECOS]:
+[PartidoA] P1 #442: Tarjeta amarilla al numero 10 de Equipo B al minuto 19  [HUECO: posible perdida]
+[PartidoA] P1 #540: Fuera de lugar de Equipo B al minuto 1  [HUECO: posible perdida]
+[PartidoA] P1 #636: Falta peligrosa de Equipo B al minuto 55  [HUECO: posible perdida]
+[PartidoA] P1 #728: Penal para Equipo B al minuto 73  [HUECO: posible perdida]
+[PartidoA] P1 #821: Gol de Equipo A al minuto 10  [HUECO: posible perdida]
+[PartidoA] P1 #921: Gol de Equipo A al minuto 10  [HUECO: posible perdida]
+
+------------------------------------------------------------------------
+RESUMEN ESTADÍSTICO FINAL (GENERADO POR EL SUSCRIPTOR EN C):
+===== RESUMEN DEL SUSCRIPTOR (UDP) =====
+tema 'PartidoA' | P1 | recibidos: 756 | perdidos: 220 | desordenados: 0 | duplicados: 0
+========================================================================

@@ -12,9 +12,7 @@ cd "$DIR_RAIZ"
 
 mkdir -p logs
 
-echo "=================================================="
 echo "    INICIANDO PRUEBA DE AUTOMATIZACIÓN (TCP)      "
-echo "=================================================="
 
 # 1. Asegurar que los binarios estén compilados
 if [ ! -f ./tcp/broker_tcp ] || [ ! -f ./tcp/subscriber_tcp ] || [ ! -f ./tcp/publisher_tcp ]; then
@@ -78,9 +76,7 @@ wait $PID_SUB2 2>/dev/null || true
 wait $PID_BROKER 2>/dev/null || true
 
 echo ""
-echo "=================================================="
 echo "               RESULTADOS DE LA PRUEBA            "
-echo "=================================================="
 echo "--- Mensajes recibidos por Suscriptor 1 (Esperados: 10 de PartidoA) ---"
 cat logs/sub1_tcp.log | grep -E "^MSG" || cat logs/sub1_tcp.log
 echo ""
@@ -90,5 +86,4 @@ echo ""
 echo "Total de mensajes capturados en logs:"
 echo "Suscriptor 1: $(grep -c "^MSG" logs/sub1_tcp.log || echo 0) mensajes"
 echo "Suscriptor 2: $(grep -c "^MSG" logs/sub2_tcp.log || echo 0) mensajes"
-echo "=================================================="
 echo "¡Prueba TCP completada con éxito! (Logs guardados en logs/)"

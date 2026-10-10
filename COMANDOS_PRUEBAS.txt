@@ -1,22 +1,4 @@
-================================================================================
-GUIA RAPIDA DE COMANDOS PARA EJECUTAR TODAS LAS PRUEBAS
-Laboratorio 3: Capa de Transporte y Sockets (TCP vs UDP)
-================================================================================
-
-Estructura organizada del repositorio:
-  Laboratorio_3/
-  ├── tcp/            -> Codigo fuente y Makefile del modulo TCP
-  ├── udp/            -> Codigo fuente y Makefile del modulo UDP
-  ├── quic/           -> Modulo bono QUIC (HTTP/3)
-  ├── pruebas/        -> Scripts de automatizacion y eventos de prueba
-  ├── capturas/       -> Archivos .pcap y .pcapng de Wireshark
-  ├── logs/           -> Archivos de registro generados por las pruebas
-  ├── Makefile        -> Compilador central de todo el proyecto
-  └── README.md       -> Documentacion general
-
---------------------------------------------------------------------------------
 1. COMPILACION DEL PROYECTO
---------------------------------------------------------------------------------
 
 Compilar todo (TCP y UDP):
   make
@@ -30,9 +12,8 @@ Limpiar todos los binarios y logs:
   make clean
 
 
---------------------------------------------------------------------------------
 2. MODO AUTOMATIZADO (EJECUCION EN 1 SOLO COMANDO)
---------------------------------------------------------------------------------
+
 
 A) Prueba automatizada TCP (Puerto 5050):
   ./pruebas/test_tcp.sh
@@ -51,11 +32,9 @@ C) Prueba de perdida de paquetes en UDP (Criterio 2 - 4 Puntos):
   - Envia rafaga de 1000 mensajes sin pausa (0 ms) para demostrar perdida del ~20%.
 
 
---------------------------------------------------------------------------------
 3. MODO MANUAL INTERACTIVO (5 TERMINALES SEPARADAS)
---------------------------------------------------------------------------------
 
-==================== PRUEBA MANUAL EN TCP (PUERTO 5050) ====================
+PRUEBA MANUAL EN TCP (PUERTO 5050)
 Abre 5 terminales distintas y ejecuta en este orden:
 
 Terminal 1 (Broker TCP):
@@ -76,7 +55,7 @@ Terminal 5 (Periodista de PartidoB):
   (Escribe mensajes; veras que SOLO aparecen en la Terminal 3 por el filtro)
 
 
-==================== PRUEBA MANUAL EN UDP (PUERTO 9090) ====================
+PRUEBA MANUAL EN UDP (PUERTO 9090)
 Abre 5 terminales distintas y ejecuta en este orden:
 
 Terminal 1 (Broker UDP):
@@ -97,26 +76,3 @@ Terminal 5 (Publicador 2 - Envia 10 mensajes con 500 ms de pausa):
 Para finalizar los suscriptores y ver su resumen estadistico en pantalla:
   Presiona Ctrl + C en las ventanas de los suscriptores.
 
-
---------------------------------------------------------------------------------
-4. CAPTURA DE TRAFICO CON WIRESHARK
---------------------------------------------------------------------------------
-Filtros de visualizacion:
-  Para TCP:  tcp.port == 5050
-  Para UDP:  udp.port == 9090
-Interfaz de captura: Loopback: lo
-Los archivos oficiales de captura se encuentran organizados en:
-  capturas/tcp_pubsub.pcap (y .pcapng)
-  capturas/udp_pubsub.pcap (y .pcapng)
-
-
---------------------------------------------------------------------------------
-5. RESOLUCION DE PROBLEMAS Y LIMPIEZA
---------------------------------------------------------------------------------
-Liberar puertos si quedaron bloqueados:
-  fuser -k 5050/tcp 2>/dev/null || true
-  fuser -k 9090/udp 2>/dev/null || true
-
-Limpiar todo:
-  make clean
-================================================================================

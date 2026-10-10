@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-# ==============================================================================
-# Script de Automatización de Pruebas - Protocolo UDP
-# Sistema Publicador-Suscriptor de Noticias Deportivas
-# ==============================================================================
 
 set -e
 PUERTO=9090
@@ -12,9 +8,7 @@ cd "$DIR_RAIZ"
 
 mkdir -p logs
 
-echo "=================================================="
 echo "    INICIANDO PRUEBA DE AUTOMATIZACIÓN (UDP)      "
-echo "=================================================="
 
 # 1. Asegurar que los binarios estén compilados
 if [ ! -f ./udp/broker_udp ] || [ ! -f ./udp/subscriber_udp ] || [ ! -f ./udp/publisher_udp ]; then
@@ -68,13 +62,10 @@ wait $PID_SUB2 2>/dev/null || true
 wait $PID_BROKER 2>/dev/null || true
 
 echo ""
-echo "=================================================="
 echo "           RESUMEN ESTADÍSTICO UDP               "
-echo "=================================================="
 echo "--- Resumen Suscriptor 1 (Esperados: 10 de PartidoA) ---"
 cat logs/sub1_udp.log | grep -A 5 "RESUMEN DEL SUSCRIPTOR" || cat logs/sub1_udp.log
 echo ""
 echo "--- Resumen Suscriptor 2 (Esperados: 20 -> 10 PartidoA y 10 PartidoB) ---"
 cat logs/sub2_udp.log | grep -A 5 "RESUMEN DEL SUSCRIPTOR" || cat logs/sub2_udp.log
-echo "=================================================="
 echo "¡Prueba UDP completada con éxito! (Logs guardados en logs/)"

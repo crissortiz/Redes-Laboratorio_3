@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-# ==============================================================================
-# Script de Demostración: Pérdida de Paquetes en UDP (Ráfaga Masiva)
-# Criterio 2 de la Rúbrica (4 Puntos)
-# ==============================================================================
 
 set -e
 PUERTO=9090
@@ -12,9 +8,7 @@ cd "$DIR_RAIZ"
 
 mkdir -p logs
 
-echo "========================================================================"
 echo "    PRUEBA DE ESTRÉS: PÉRDIDA DE PAQUETES EN UDP (RÁFAGA DE 1000 MSGS)   "
-echo "========================================================================"
 
 # 1. Asegurar compilación
 if [ ! -f ./udp/broker_udp ] || [ ! -f ./udp/subscriber_udp ] || [ ! -f ./udp/publisher_udp ]; then
@@ -52,17 +46,12 @@ wait $PID_SUB 2>/dev/null || true
 wait $PID_BROKER 2>/dev/null || true
 
 echo ""
-echo "========================================================================"
 echo "           EVIDENCIA EXPERIMENTAL DE PÉRDIDA DE DATAGRAMAS             "
-echo "========================================================================"
 echo "Muestra de saltos en secuencia detectados por el suscriptor [HUECOS]:"
 grep "HUECO: posible perdida" logs/sub_burst.log | head -n 6
 echo "..."
 grep "HUECO: posible perdida" logs/sub_burst.log | tail -n 3
 echo ""
-echo "------------------------------------------------------------------------"
 echo "RESUMEN ESTADÍSTICO FINAL (GENERADO POR EL SUSCRIPTOR EN C):"
 cat logs/sub_burst.log | grep -A 3 "RESUMEN DEL SUSCRIPTOR"
-echo "========================================================================"
 echo ">> TOMA LA CAPTURA DE PANTALLA DE ESTA TERMINAL PARA EL INFORME <<"
-echo "========================================================================"
